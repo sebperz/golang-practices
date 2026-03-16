@@ -5,24 +5,23 @@ import (
 	"testing"
 )
 
-func Test(t *testing.T) {
+func TestDivide(t *testing.T) {
 	type testCase struct {
-		name           string
-		membershipType string
-		message        string
-		expectResult   string
-		expectSuccess  bool
+		dividend, divisor, expected float64
+		expectedError               string
 	}
 
 	runCases := []testCase{
-		{"Syl", "standard", "Hello, Kaladin!", "Hello, Kaladin!", true},
-		{"Pattern", "premium", "You are not as good with patterns... You are abstract. You think in lies and tell them to yourselves. That is fascinating, but it is not good for patterns.", "You are not as good with patterns... You are abstract. You think in lies and tell them to yourselves. That is fascinating, but it is not good for patterns.", true},
-		{"Dalinar", "standard", "I will take responsibility for what I have done. If I must fall, I will rise each time a better man.", "I will take responsibility for what I have done. If I must fall, I will rise each time a better man.", true},
+		{10, 2, 5, ""},
+		{15, 3, 5, ""},
 	}
 
 	submitCases := append(runCases, []testCase{
-		{"Pattern", "standard", "Humans can see the world as it is not. It is why your lies can be so strong. You are able to not admit that they are lies.", "", false},
-		{"Dabbid", "premium", ".........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................", "", false},
+		{10, 0, 0, "can not divide 10 by zero"},
+		{15, 0, 0, "can not divide 15 by zero"},
+		{100, 10, 10, ""},
+		{16, 4, 4, ""},
+		{30, 6, 5, ""},
 	}...)
 
 	testCases := runCases
@@ -36,32 +35,27 @@ func Test(t *testing.T) {
 	failCount := 0
 
 	for _, test := range testCases {
-		user := newUser(test.name, test.membershipType)
-		result, pass := user.SendMessage(test.message, len(test.message))
-		if test.expectSuccess != pass || result != test.expectResult {
+		output, err := divide(test.dividend, test.divisor)
+		var errString string
+		if err != nil {
+			errString = err.Error()
+		}
+		if output != test.expected || errString != test.expectedError {
 			failCount++
 			t.Errorf(`---------------------------------
-Test Failed:
-* user:               %s
-* membership type:    %s
-* message:            %s
-* expected result:    %s
-* expected success:   %v
-* actual result:      %s
-* actual success:     %v
-`, test.name, test.membershipType, test.message, test.expectResult, test.expectSuccess, result, pass)
+Inputs:     (%v, %v)
+Expecting:  (%v, %v)
+Actual:     (%v, %v)
+Fail
+`, test.dividend, test.divisor, test.expected, test.expectedError, output, errString)
 		} else {
 			passCount++
 			fmt.Printf(`---------------------------------
-Test Passed:
-* user:               %s
-* membership type:    %s
-* message:            %s
-* expected result:    %s
-* expected success:   %v
-* actual result:      %s
-* actual success:     %v
-`, test.name, test.membershipType, test.message, test.expectResult, test.expectSuccess, result, pass)
+Inputs:     (%v, %v)
+Expecting:  (%v, %v)
+Actual:     (%v, %v)
+Pass
+`, test.dividend, test.divisor, test.expected, test.expectedError, output, errString)
 		}
 	}
 
