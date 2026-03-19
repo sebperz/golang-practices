@@ -1,20 +1,9 @@
 package main
 
-import (
-	"fmt"
-)
-
-type divideError struct {
-	dividend float64
-}
-
-func (n divideError) Error() string {
-	return fmt.Sprintf("can not divide %v by zero", n.dividend)
-}
-
-func divide(dividend, divisor float64) (float64, error) {
-	if divisor == 0 {
-		return 0, divideError{dividend: dividend}
+func bulkSend(numMessages int) float64 {
+	total := 0.0
+	for i := 0.0; i < float64(numMessages); i++ {
+		total += 1.0 + i/100.0
 	}
-	return dividend / divisor, nil
+	return total
 }

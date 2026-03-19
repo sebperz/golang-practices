@@ -5,57 +5,50 @@ import (
 	"testing"
 )
 
-func TestDivide(t *testing.T) {
+func Test(t *testing.T) {
 	type testCase struct {
-		dividend, divisor, expected float64
-		expectedError               string
+		numMessages int
+		expected    float64
 	}
-
 	runCases := []testCase{
-		{10, 2, 5, ""},
-		{15, 3, 5, ""},
+		{10, 10.45},
+		{20, 21.9},
 	}
 
 	submitCases := append(runCases, []testCase{
-		{10, 0, 0, "can not divide 10 by zero"},
-		{15, 0, 0, "can not divide 15 by zero"},
-		{100, 10, 10, ""},
-		{16, 4, 4, ""},
-		{30, 6, 5, ""},
+		{0, 0.0},
+		{1, 1.0},
+		{5, 5.10},
+		{30, 34.35},
 	}...)
 
 	testCases := runCases
 	if withSubmit {
 		testCases = submitCases
 	}
-
 	skipped := len(submitCases) - len(testCases)
 
 	passCount := 0
 	failCount := 0
 
 	for _, test := range testCases {
-		output, err := divide(test.dividend, test.divisor)
-		var errString string
-		if err != nil {
-			errString = err.Error()
-		}
-		if output != test.expected || errString != test.expectedError {
+		output := bulkSend(test.numMessages)
+		if fmt.Sprintf("%.2f", output) != fmt.Sprintf("%.2f", test.expected) {
 			failCount++
 			t.Errorf(`---------------------------------
-Inputs:     (%v, %v)
-Expecting:  (%v, %v)
-Actual:     (%v, %v)
+Inputs:     (%v)
+Expecting:  %.2f
+Actual:     %.2f
 Fail
-`, test.dividend, test.divisor, test.expected, test.expectedError, output, errString)
+`, test.numMessages, test.expected, output)
 		} else {
 			passCount++
 			fmt.Printf(`---------------------------------
-Inputs:     (%v, %v)
-Expecting:  (%v, %v)
-Actual:     (%v, %v)
+Inputs:     (%v)
+Expecting:  %.2f
+Actual:     %.2f
 Pass
-`, test.dividend, test.divisor, test.expected, test.expectedError, output, errString)
+`, test.numMessages, test.expected, output)
 		}
 	}
 
