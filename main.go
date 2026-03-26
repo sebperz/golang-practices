@@ -1,9 +1,9 @@
 package main
 
-func bulkSend(numMessages int) float64 {
-	total := 0.0
-	for i := 0.0; i < float64(numMessages); i++ {
-		total += 1.0 + i/100.0
+func getMessageCosts(messages []string) []float64 {
+	cost := make([]float64, len(messages))
+	for i := range len(cost) {
+		cost[i] = float64(len(messages[i])) * 0.01
 	}
-	return total
+	return cost
 }
