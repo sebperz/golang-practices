@@ -1,4 +1,4 @@
 # go-practices
 
 ## boot.dev
-Learning Go: CH10 | L1
+Learning Go: CH10 | L2
