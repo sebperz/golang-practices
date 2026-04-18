@@ -1,9 +1,27 @@
 package main
 
-func sum(nums ...int) int {
-	output := 0
-	for i := range nums {
-		output += nums[i]
+import "strings"
+
+type sms struct {
+	id      string
+	content string
+	tags    []string
+}
+
+func tagMessages(messages []sms, tagger func(sms) []string) []sms {
+	for i := range messages {
+		messages[i].tags = tagger(messages[i])
 	}
-	return output
+	return messages
+}
+
+func tagger(msg sms) []string {
+	tags := []string{}
+	if strings.Contains(strings.ToLower(msg.content), "urgent") {
+		tags = append(tags, "Urgent")
+	}
+	if strings.Contains(strings.ToLower(msg.content), "sale") {
+		tags = append(tags, "Promo")
+	}
+	return tags
 }
