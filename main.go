@@ -3,16 +3,16 @@ package main
 import "errors"
 
 func getUserMap(names []string, phoneNumbers []int) (map[string]user, error) {
-	output := map[string]user{}
+	valorDeSalida := map[string]user{}
 	if len(names) != len(phoneNumbers) {
-		return nil, errors.New("invalid sizes")
+		return nil, errors.New("invalid len")
 	}
 	for i, name := range names {
-		output[name] = user{
+		valorDeSalida[name] = user{
 			phoneNumber: phoneNumbers[i],
 			name:        name}
 	}
-	return output, nil
+	return valorDeSalida, nil
 }
 
 type user struct {
